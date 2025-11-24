@@ -69,13 +69,13 @@ class HierarchicalLocationEmbedding(nn.Module):
         # Main location embedding
         self.location_embed = nn.Embedding(num_locations, d_model)
 
-        # Smaller additive embeddings for hierarchy
-        self.cluster_embed = nn.Embedding(num_clusters, d_model // 4)
-        self.cluster_proj = nn.Linear(d_model // 4, d_model, bias=False)
+        # Additive embeddings for hierarchy (larger for more expressiveness)
+        self.cluster_embed = nn.Embedding(num_clusters, d_model // 2)
+        self.cluster_proj = nn.Linear(d_model // 2, d_model, bias=False)
 
-        # Frequency embedding (smaller)
-        self.freq_embed = nn.Embedding(10, d_model // 4)  # Reduced from 20 to 10 buckets
-        self.freq_proj = nn.Linear(d_model // 4, d_model, bias=False)
+        # Frequency embedding
+        self.freq_embed = nn.Embedding(10, d_model // 2)  # Increased from d_model//4
+        self.freq_proj = nn.Linear(d_model // 2, d_model, bias=False)
         self.register_buffer('loc_freq_bucket', torch.zeros(num_locations, dtype=torch.long))
 
         self.layer_norm = nn.LayerNorm(d_model)
@@ -212,16 +212,21 @@ class UserLocationInteraction(nn.Module):
 
 class FrequencyAwareHead(nn.Module):
     """
-    Parameter-efficient prediction head with frequency awareness
+    Improved prediction head with frequency awareness
     """
     def __init__(self, d_model, num_locations):
         super().__init__()
 
-        # Single-layer neural prediction with frequency bias
-        self.neural_proj = nn.Linear(d_model, num_locations)
+        # Two-layer neural prediction
+        self.neural_proj = nn.Sequential(
+            nn.Linear(d_model, d_model),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(d_model, num_locations)
+        )
 
         # Learnable frequency scaling
-        self.freq_scale = nn.Parameter(torch.tensor(0.1))
+        self.freq_scale = nn.Parameter(torch.tensor(0.3))
 
     def forward(self, hidden, freq_probs):
         """

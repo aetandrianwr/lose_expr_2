@@ -1,9 +1,9 @@
 {
+  "dataset": "geolife",
   "train_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_train.pk",
   "val_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_validation.pk",
   "test_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_test.pk",
   "batch_size": 128,
-  "max_seq_len": 50,
   "d_model": 96,
   "num_layers": 2,
   "num_heads": 4,
@@ -14,6 +14,16 @@
   "weight_decay": 0.0001,
   "grad_clip": 1.0,
   "label_smoothing": 0.1,
+  "scheduler": "onecycle",
+  "pct_start": 0.1,
   "patience": 15,
-  "checkpoint_dir": "./checkpoints"
+  "monitor": "val_acc",
+  "checkpoint_dir": "./checkpoints",
+  "name": "model1",
+  "seed": 42,
+  "device": "cuda",
+  "num_locations": 1187,
+  "num_users": 46,
+  "max_seq_len": 54,
+  "num_parameters": 412043
 }

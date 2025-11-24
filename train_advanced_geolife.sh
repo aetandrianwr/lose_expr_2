@@ -8,12 +8,12 @@ TRAIN_PATH="data/${DATASET}/${DATASET}_transformer_7_train.pk"
 VAL_PATH="data/${DATASET}/${DATASET}_transformer_7_validation.pk"
 TEST_PATH="data/${DATASET}/${DATASET}_transformer_7_test.pk"
 
-# Model hyperparameters (optimized for <500K params)
-D_MODEL=64
-NUM_HEADS=4
-NUM_LAYERS=2
-NUM_CLUSTERS=40
-DROPOUT=0.2
+# Model hyperparameters (v2: increased capacity, target ~480K params)
+D_MODEL=96
+NUM_HEADS=8
+NUM_LAYERS=3
+NUM_CLUSTERS=50
+DROPOUT=0.3
 
 # Training hyperparameters
 BATCH_SIZE=128
