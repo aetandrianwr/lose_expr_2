@@ -17,7 +17,6 @@ TRAIN_PATH="/content/lose_expr_2/data/geolife/geolife_transformer_7_train.pk"
 VAL_PATH="/content/lose_expr_2/data/geolife/geolife_transformer_7_validation.pk"
 TEST_PATH="/content/lose_expr_2/data/geolife/geolife_transformer_7_test.pk"
 BATCH_SIZE=128
-MAX_SEQ_LEN=50
 
 # Model architecture
 D_MODEL=96            # Model dimension (64, 96, 128, 256)
@@ -59,7 +58,6 @@ python src/train_model1_configurable.py \
     --val-path "$VAL_PATH" \
     --test-path "$TEST_PATH" \
     --batch-size $BATCH_SIZE \
-    --max-seq-len $MAX_SEQ_LEN \
     --d-model $D_MODEL \
     --num-layers $NUM_LAYERS \
     --num-heads $NUM_HEADS \

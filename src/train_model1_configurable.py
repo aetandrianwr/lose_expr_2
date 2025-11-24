@@ -44,8 +44,6 @@ def parse_args():
                               help='Path to test data')
     dataset_group.add_argument('--batch-size', type=int, default=128,
                               help='Batch size')
-    dataset_group.add_argument('--max-seq-len', type=int, default=50,
-                              help='Maximum sequence length')
 
     # Model architecture arguments
     model_group = parser.add_argument_group('Model Architecture')
@@ -119,7 +117,6 @@ def print_config(config):
     print(f"  Val path:           {config['val_path']}")
     print(f"  Test path:          {config['test_path']}")
     print(f"  Batch size:         {config['batch_size']}")
-    print(f"  Max sequence len:   {config['max_seq_len']}")
     print()
 
     print("Model Architecture:")
@@ -172,7 +169,6 @@ def main():
         'val_path': args.val_path,
         'test_path': args.test_path,
         'batch_size': args.batch_size,
-        'max_seq_len': args.max_seq_len,
         'd_model': args.d_model,
         'num_layers': args.num_layers,
         'num_heads': args.num_heads,
@@ -218,10 +214,11 @@ def main():
         config['val_path'],
         config['test_path'],
         batch_size=config['batch_size'],
-        max_seq_len=config['max_seq_len']
+        max_seq_len=None  # Infer from data
     )
 
     print(f"Loaded: {dataset_info['num_locations']} locations, {dataset_info['num_users']} users")
+    print(f"Max sequence length: {dataset_info['max_seq_len']} (inferred from data)")
     print(f"Splits: train={dataset_info['train_size']}, val={dataset_info['val_size']}, test={dataset_info['test_size']}")
     print()
 
@@ -235,7 +232,7 @@ def main():
         num_heads=config['num_heads'],
         kernel_size=config['kernel_size'],
         dropout=config['dropout'],
-        max_seq_len=config['max_seq_len']
+        max_seq_len=dataset_info['max_seq_len']
     ).to(device)
 
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
@@ -291,6 +288,7 @@ def main():
     config_save = config.copy()
     config_save['num_locations'] = int(dataset_info['num_locations'])
     config_save['num_users'] = int(dataset_info['num_users'])
+    config_save['max_seq_len'] = int(dataset_info['max_seq_len'])
     config_save['num_parameters'] = int(num_params)
 
     with open(checkpoint_dir / 'config.json', 'w') as f:

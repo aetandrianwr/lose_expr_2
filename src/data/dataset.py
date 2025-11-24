@@ -204,12 +204,26 @@ def get_dataloaders(train_path, val_path, test_path, batch_size=64, max_seq_len=
         pin_memory=True
     )
     
+    # Compute actual max sequence length from all datasets if not provided
+    if max_seq_len is None:
+        max_seq_lens = []
+        for sample in train_dataset.data:
+            max_seq_lens.append(len(sample['X']))
+        for sample in val_dataset.data:
+            max_seq_lens.append(len(sample['X']))
+        for sample in test_dataset.data:
+            max_seq_lens.append(len(sample['X']))
+        inferred_max_seq_len = max(max_seq_lens)
+    else:
+        inferred_max_seq_len = max_seq_len
+
     dataset_info = {
         'num_locations': train_dataset.num_locations,
         'num_users': train_dataset.num_users,
+        'max_seq_len': inferred_max_seq_len,
         'train_size': len(train_dataset),
         'val_size': len(val_dataset),
         'test_size': len(test_dataset)
     }
-    
+
     return train_loader, val_loader, test_loader, dataset_info
