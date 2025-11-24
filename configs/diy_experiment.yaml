@@ -1,0 +1,24 @@
+# Experiment configuration for DIY dataset
+# Inherits from default.yaml and overrides specific parameters
+
+# Experiment Settings
+experiment:
+  name: "diy_experiment"
+  description: "Experiment on DIY dataset with optimized hyperparameters"
+  tags: ["diy", "temporal_fusion", "production"]
+
+# Dataset Configuration
+data:
+  dataset_name: "diy"
+  batch_size: 128  # Adjust based on DIY dataset size
+
+# Model Configuration - may need adjustment based on DIY dataset statistics
+model:
+  embedding_dim: 256
+  hidden_dim: 512
+  num_heads: 8
+
+# Training Configuration
+training:
+  epochs: 150
+  learning_rate: 0.0005

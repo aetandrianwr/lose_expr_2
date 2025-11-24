@@ -1,0 +1,114 @@
+# Default configuration for next-location prediction experiments
+# All parameters can be overridden via command line or experiment-specific configs
+
+# Experiment Settings
+experiment:
+  name: "default_experiment"
+  description: "Default configuration for temporal fusion model"
+  tags: ["baseline", "temporal_fusion"]
+  
+# Reproducibility
+seed: 42
+
+# Dataset Configuration
+data:
+  dataset_name: "geolife"  # Options: "geolife", "diy"
+  data_dir: "data"
+  batch_size: 256
+  num_workers: 4
+  pin_memory: true
+  
+  # Sequence parameters (auto-inferred if null)
+  max_seq_len: null  # Will be computed from dataset
+  num_locations: null  # Will be computed from dataset
+  num_users: null  # Will be computed from dataset
+  
+  # Data augmentation
+  augmentation:
+    enabled: false
+    noise_std: 0.01
+
+# Model Configuration
+model:
+  name: "TemporalFusionModel"
+  
+  # Architecture parameters
+  embedding_dim: 128
+  hidden_dim: 256
+  num_heads: 8
+  num_layers: 4
+  dropout: 0.1
+  
+  # Temporal convolution
+  kernel_size: 3
+  num_temporal_blocks: 3
+  dilation_rates: [1, 2, 4]
+  
+  # Feature fusion
+  use_user_embedding: true
+  use_temporal_features: true
+  use_positional_encoding: true
+
+# Training Configuration
+training:
+  epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 1.0
+  
+  # Optimizer
+  optimizer: "adamw"  # Options: "adam", "adamw", "sgd"
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+  
+  # Learning rate scheduler
+  scheduler:
+    type: "onecycle"  # Options: "onecycle", "cosine", "step", "plateau"
+    pct_start: 0.1
+    anneal_strategy: "cos"
+    div_factor: 25.0
+    final_div_factor: 10000.0
+  
+  # Loss function
+  loss:
+    type: "cross_entropy"
+    label_smoothing: 0.1
+  
+  # Mixed precision training
+  use_amp: true
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 15
+    min_delta: 0.0001
+    monitor: "val_acc"  # Options: "val_acc", "val_loss"
+  
+  # Checkpoint saving
+  save_best_only: true
+  save_frequency: 5  # Save every N epochs
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["accuracy", "top5_accuracy", "mrr", "precision", "recall", "f1"]
+  test_batch_size: 512
+
+# Logging Configuration
+logging:
+  log_dir: "logs"
+  checkpoint_dir: "checkpoints"
+  tensorboard: true
+  log_interval: 10  # Log every N batches
+  
+  # Experiment tracking
+  use_wandb: false
+  wandb:
+    project: "next-location-prediction"
+    entity: null
+
+# Hardware Configuration
+hardware:
+  device: "cuda"  # Options: "cuda", "cpu", "mps"
+  cuda_deterministic: true
+  cuda_benchmark: false  # Set to true for speed if input size is fixed
+  distributed: false
