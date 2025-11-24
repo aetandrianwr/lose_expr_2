@@ -1,0 +1,17 @@
+{
+  "train_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_train.pk",
+  "val_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_validation.pk",
+  "test_path": "/content/lose_expr_2/data/geolife/geolife_transformer_7_test.pk",
+  "batch_size": 64,
+  "max_seq_len": 50,
+  "d_model": 112,
+  "num_layers": 2,
+  "dropout": 0.3,
+  "epochs": 150,
+  "lr": 0.0005,
+  "weight_decay": 0.0005,
+  "grad_clip": 0.5,
+  "label_smoothing": 0.15,
+  "patience": 25,
+  "checkpoint_dir": "./checkpoints_v2"
+}
