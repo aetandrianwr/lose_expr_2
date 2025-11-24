@@ -128,29 +128,34 @@ class LightweightAttentionModel(nn.Module):
         x = x + self.pos_embedding[:, :L, :]
         
         # Self-attention
-        residual = x
+        residual = x  # [B, L, d_model]
         x = self.attn_norm(x)
         
         qkv = self.attn_qkv(x).reshape(B, L, 3, self.d_model).permute(2, 0, 1, 3)
-        q, k, v = qkv[0], qkv[1], qkv[2]
+        q, k, v = qkv[0], qkv[1], qkv[2]  # Each is [B, L, d_model]
         
         # Attention scores
-        scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.d_model)
-        scores = scores.masked_fill(~mask.unsqueeze(1).unsqueeze(2), float('-inf'))
+        scores = torch.matmul(q, k.transpose(-2, -1)) / math.sqrt(self.d_model)  # [B, L, L]
         
-        attn = F.softmax(scores, dim=-1)
+        # Apply mask
+        mask_expanded = mask.unsqueeze(1)  # [B, 1, L]
+        scores = scores.masked_fill(~mask_expanded, float('-inf'))
+        
+        attn = F.softmax(scores, dim=-1)  # [B, L, L]
         attn = self.attn_dropout(attn)
         
-        out = torch.matmul(attn, v)
+        out = torch.matmul(attn, v)  # [B, L, d_model]
         out = self.attn_out(out)
-        x = residual + out
+        x = residual + out  # [B, L, d_model]
         
         # Feed-forward
-        x = x + self.ff(self.ff_norm(x))
+        x = x + self.ff(self.ff_norm(x))  # [B, L, d_model]
         
-        # Extract last valid position
-        idx = (seq_len - 1).unsqueeze(1).unsqueeze(2).expand(-1, -1, self.d_model)
-        x = x.gather(1, idx).squeeze(1)
+        # Extract last valid position for each sequence
+        idx = (seq_len - 1).long()  # [B]
+        idx = idx.unsqueeze(-1).unsqueeze(-1)  # [B, 1, 1]
+        idx = idx.expand(-1, -1, self.d_model)  # [B, 1, d_model]
+        x = x.gather(dim=1, index=idx).squeeze(1)  # [B, d_model]
         
         x = self.output_norm(x)
         x = self.output_dropout(x)

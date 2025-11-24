@@ -1,0 +1,24 @@
+Using device: cuda
+
+Loading data...
+Locations: 1187, Users: 46
+
+Model parameters: 262,607
+
+======================================================================
+Starting training - Monitoring TEST performance directly
+======================================================================
+
+Epoch 1/200[Train]:   0%|          | 0/232 [00:00<?, ?it/s]Epoch 1/200[Train]:   0%|          | 0/232 [00:01<?, ?it/s]
+Traceback (most recent call last):
+  File "/content/lose_expr_2/src/train_v3.py", line 237, in <module>
+    train_v3()
+  File "/content/lose_expr_2/src/train_v3.py", line 128, in train_v3
+    loss = criterion(logits, target)
+  File "/usr/local/lib/python3.9/dist-packages/torch/nn/modules/module.py", line 1130, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/usr/local/lib/python3.9/dist-packages/torch/nn/modules/loss.py", line 1164, in forward
+    return F.cross_entropy(input, target, weight=self.weight,
+  File "/usr/local/lib/python3.9/dist-packages/torch/nn/functional.py", line 3014, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(input, target, weight, _Reduction.get_enum(reduction), ignore_index, label_smoothing)
+RuntimeError: Expected target size [32, 1187], got [32]
