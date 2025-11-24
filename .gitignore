@@ -40,6 +40,7 @@ experiments/*/
 logs/*.log
 checkpoints/*.pt
 checkpoints/*.pth
+checkpoints_*/
 !checkpoints/.gitkeep
 !experiments/.gitkeep
 !logs/.gitkeep
@@ -50,6 +51,9 @@ runs/
 # Data (large files)
 *.zip
 data.zip
+data/**/*.pk
+data/**/*.pkl
+data/**/*.pickle
 
 # OS
 .DS_Store

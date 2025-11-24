@@ -1,0 +1,152 @@
+
+================================================================================
+Analyzing TRAIN
+================================================================================
+Total samples: 7424
+
+Sequence Statistics:
+  Min length: 3
+  Max length: 51
+  Mean length: 17.97
+  Median length: 16.00
+
+Location Statistics:
+  Unique locations in sequences: 1139
+  Unique target locations: 1093
+  Most common location: (14, 17949)
+  Most common target: (7, 783)
+
+Location Frequency Distribution:
+  Locations appearing once: 16
+  Locations appearing 2-5 times: 64
+  Locations appearing 6-10 times: 114
+  Locations appearing >10 times: 945
+
+Target Frequency Distribution:
+  Targets appearing once: 435
+  Targets appearing 2-5 times: 554
+  Targets appearing >5 times: 104
+  Top 10 most common targets: [(7, 783), (14, 616), (811, 383), (582, 283), (9, 214), (232, 193), (1019, 181), (814, 166), (4, 163), (628, 148)]
+
+Temporal Features:
+  Weekday distribution: {0: 1050, 1: 1084, 2: 1114, 3: 1122, 4: 1178, 5: 928, 6: 948}
+  Hour distribution (last visit):
+    00:00-04:00: 1848
+    04:00-08:00: 1294
+    08:00-12:00: 2152
+    12:00-16:00: 1463
+    16:00-20:00: 364
+    20:00-24:00: 303
+
+================================================================================
+Analyzing VALIDATION
+================================================================================
+Total samples: 3334
+
+Sequence Statistics:
+  Min length: 3
+  Max length: 54
+  Mean length: 18.23
+  Median length: 15.00
+
+Location Statistics:
+  Unique locations in sequences: 376
+  Unique target locations: 337
+  Most common location: (14, 10201)
+  Most common target: (1, 591)
+
+Location Frequency Distribution:
+  Locations appearing once: 12
+  Locations appearing 2-5 times: 49
+  Locations appearing 6-10 times: 46
+  Locations appearing >10 times: 269
+
+Target Frequency Distribution:
+  Targets appearing once: 192
+  Targets appearing 2-5 times: 91
+  Targets appearing >5 times: 54
+  Top 10 most common targets: [(1, 591), (7, 371), (14, 297), (1019, 262), (1151, 185), (582, 180), (9, 99), (372, 90), (4, 74), (15, 70)]
+
+Temporal Features:
+  Weekday distribution: {0: 506, 1: 497, 2: 491, 3: 481, 4: 455, 5: 457, 6: 447}
+  Hour distribution (last visit):
+    00:00-04:00: 819
+    04:00-08:00: 609
+    08:00-12:00: 881
+    12:00-16:00: 664
+    16:00-20:00: 169
+    20:00-24:00: 192
+
+================================================================================
+Analyzing TEST
+================================================================================
+Total samples: 3502
+
+Sequence Statistics:
+  Min length: 3
+  Max length: 46
+  Mean length: 18.37
+  Median length: 14.00
+
+Location Statistics:
+  Unique locations in sequences: 347
+  Unique target locations: 315
+  Most common location: (1, 14861)
+  Most common target: (1, 798)
+
+Location Frequency Distribution:
+  Locations appearing once: 13
+  Locations appearing 2-5 times: 43
+  Locations appearing 6-10 times: 55
+  Locations appearing >10 times: 236
+
+Target Frequency Distribution:
+  Targets appearing once: 176
+  Targets appearing 2-5 times: 90
+  Targets appearing >5 times: 49
+  Top 10 most common targets: [(1, 798), (1019, 319), (7, 317), (14, 307), (336, 155), (9, 96), (1151, 96), (4, 94), (372, 89), (582, 80)]
+
+Temporal Features:
+  Weekday distribution: {0: 538, 1: 529, 2: 521, 3: 541, 4: 517, 5: 464, 6: 392}
+  Hour distribution (last visit):
+    00:00-04:00: 601
+    04:00-08:00: 490
+    08:00-12:00: 986
+    12:00-16:00: 669
+    16:00-20:00: 409
+    20:00-24:00: 347
+
+================================================================================
+DISTRIBUTION SHIFT ANALYSIS
+================================================================================
+
+Target Location Coverage:
+  Train unique targets: 1093
+  Val unique targets: 337
+  Test unique targets: 315
+  Val targets not in train: 25
+  Test targets not in train: 23
+  Test targets not in train or val: 18
+
+Sequence Location Coverage:
+  Train unique locations: 1139
+  Val unique locations: 376
+  Test unique locations: 347
+  Val locations not in train: 13
+  Test locations not in train: 15
+
+Top-K Target Coverage Analysis:
+  Top-  1 coverage: Val=11.13%, Test=9.05%
+  Top-  5 coverage: Val=28.46%, Test=22.87%
+  Top- 10 coverage: Val=40.88%, Test=35.81%
+  Top- 20 coverage: Val=51.50%, Test=46.12%
+  Top- 50 coverage: Val=63.17%, Test=57.20%
+  Top-100 coverage: Val=69.23%, Test=64.11%
+
+================================================================================
+KEY INSIGHTS
+================================================================================
+1. Check for targets in test that never appear in train
+2. Analyze if val/test have different temporal patterns
+3. Look for location co-occurrence patterns
+4. Understand user-specific behavior patterns
